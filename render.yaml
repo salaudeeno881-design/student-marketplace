@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: student-marketplace
+    env: python
+    plan: starter
+    buildCommand: ""
+    startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT"
+    autoDeploy: true
+
