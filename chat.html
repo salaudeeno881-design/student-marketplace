@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="form-panel chat-panel">
+    <h2>Student chat</h2>
+    <p>Use this space to ask classmates to meet, confirm payment details, or find someone to pay in person.</p>
+
+    {% if current_user.is_authenticated %}
+      <form class="chat-form" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <label>Send a message</label>
+        <textarea name="message" required placeholder="Write a short message to the group..."></textarea>
+        <button type="submit">Send</button>
+      </form>
+    {% else %}
+      <p class="note">Please <a href="{{ url_for('login') }}">login</a> to post in the chat.</p>
+    {% endif %}
+
+    <div class="chat-list">
+      {% for message in messages %}
+        <div class="chat-item">
+          <div class="message-meta">{{ message.user.name }} · Matric {{ message.user.matric_number }} · {{ message.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+          <p>{{ message.content }}</p>
+        </div>
+      {% else %}
+        <p>No chat messages yet. Be the first to say hi!</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

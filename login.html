@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="form-panel">
+    <h2>Student login</h2>
+    <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <label>Email</label>
+      <input type="email" name="email" required />
+      <label>Password</label>
+      <input type="password" name="password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p>New to the marketplace? <a href="{{ url_for('register') }}">Register</a></p>
+  </section>
+{% endblock %}

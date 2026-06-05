@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="form-panel">
+    <h2>Publish a new listing</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <label>Type</label>
+      <select name="listing_type" required>
+        <option value="sell">Sell item</option>
+        <option value="buy">Want to buy</option>
+      </select>
+      <label>Title</label>
+      <input type="text" name="title" required />
+      <label>Description</label>
+      <textarea name="description" rows="5" required></textarea>
+      <label>Price (NGN)</label>
+      <input type="number" name="price" step="0.01" min="0.00" required />
+      <label>Product Image (JPG, PNG, GIF, WEBP - Max 5MB)</label>
+      <input type="file" name="image" accept="image/*" />
+      <button type="submit">Create listing</button>
+    </form>
+  </section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Buy, sell, and trade safely with verified students.</h1>
+    <p>List textbooks, dorm essentials, laptops, and study gear for other verified students.</p>
+  </section>
+
+  <section class="listings">
+    <h2>Recent Listings</h2>
+    {% if listings %}
+      <div class="card-grid">
+        {% for listing in listings %}
+          <article class="card">
+            {% if listing.image_filename %}
+              <div class="card-image">
+                <img src="{{ url_for('static', filename='uploads/' + listing.image_filename) }}" alt="{{ listing.title }}" />
+              </div>
+            {% endif %}
+            <h3>{{ listing.title }}</h3>
+            <p class="tag {{ listing.listing_type }}">{{ 'For sale' if listing.listing_type == 'sell' else 'Wanted' }}</p>
+            <p>{{ listing.description[:140] }}{% if listing.description|length > 140 %}...{% endif %}</p>
+            <p class="price">₦{{ '%.2f' | format(listing.price) }}</p>
+            <p class="meta">Posted by {{ listing.owner.name }} on {{ listing.created_at.strftime('%Y-%m-%d') }}</p>
+            <a class="button" href="{{ url_for('listing_detail', listing_id=listing.id) }}">View listing</a>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No listings yet. Check back soon!</p>
+    {% endif %}
+  </section>
+{% endblock %}

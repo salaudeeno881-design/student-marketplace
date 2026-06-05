@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="success-panel">
+    <h2>Payment Successful!</h2>
+    <p>Your order for <strong>{{ listing.title }}</strong> has been confirmed.</p>
+    <div class="order-details">
+      <p><strong>Item:</strong> {{ listing.title }}</p>
+      <p><strong>Amount Paid:</strong> ₦{{ '%.2f' | format(listing.price) }}</p>
+      <p><strong>Seller:</strong> {{ listing.owner.name }}</p>
+    </div>
+    <p>Check your dashboard to view your order and contact the seller for delivery details.</p>
+    <a class="button" href="{{ url_for('dashboard') }}">View My Orders</a>
+  </section>
+{% endblock %}

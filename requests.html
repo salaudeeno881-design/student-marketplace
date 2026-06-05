@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="listings">
+    <h2>Marketplace Browse</h2>
+    <div class="browse-grid">
+      <div>
+        <h3>For Sale</h3>
+        {% if sell_posts %}
+          <div class="card-grid">
+            {% for listing in sell_posts %}
+              <article class="card">
+                {% if listing.image_filename %}
+                  <div class="card-image">
+                    <img src="{{ url_for('static', filename='uploads/' + listing.image_filename) }}" alt="{{ listing.title }}" />
+                  </div>
+                {% endif %}
+                <h3>{{ listing.title }}</h3>
+                <p>{{ listing.description[:120] }}{% if listing.description|length > 120 %}...{% endif %}</p>
+                <p class="price">₦{{ '%.2f' | format(listing.price) }}</p>
+                <p class="meta">Posted by {{ listing.owner.name }}</p>
+                <a class="button" href="{{ url_for('listing_detail', listing_id=listing.id) }}">View listing</a>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>No items for sale yet.</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <h3>Wanted</h3>
+        {% if wanted_posts %}
+          <div class="card-grid">
+            {% for listing in wanted_posts %}
+              <article class="card">
+                {% if listing.image_filename %}
+                  <div class="card-image">
+                    <img src="{{ url_for('static', filename='uploads/' + listing.image_filename) }}" alt="{{ listing.title }}" />
+                  </div>
+                {% endif %}
+                <h3>{{ listing.title }}</h3>
+                <p>{{ listing.description[:120] }}{% if listing.description|length > 120 %}...{% endif %}</p>
+                <p class="price">Budget: ₦{{ '%.2f' | format(listing.price) }}</p>
+                <p class="meta">Requested by {{ listing.owner.name }}</p>
+                <div class="item-row" style="gap:0.75rem; align-items:center;">
+                  <a class="button" href="{{ url_for('listing_detail', listing_id=listing.id) }}">View request</a>
+                  {% if current_user.is_authenticated and current_user.id == listing.owner_id %}
+                    <form class="inline-form" method="POST" action="{{ url_for('delete_listing', listing_id=listing.id) }}">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                      <button type="submit" class="button button-small button-danger">Delete</button>
+                    </form>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>No buy requests yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

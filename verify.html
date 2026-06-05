@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="info-panel">
+    <h2>Verify your email</h2>
+    <p>We have created your account. A verification link was sent to your student email address.</p>
+    <p>For local development, your link appears below:</p>
+    <p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+    <p>Click the link to activate your account.</p>
+    <a class="button" href="{{ url_for('index') }}">Return home</a>
+  </section>
+{% endblock %}

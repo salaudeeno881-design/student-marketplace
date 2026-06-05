@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="dashboard-panel">
+    <div class="dashboard-header">
+      <h2>Welcome, {{ current_user.name }}</h2>
+      <p>Verified: {{ 'Yes' if current_user.is_verified else 'No' }}</p>
+      <p>Department: {{ current_user.department }} · Matric: {{ current_user.matric_number }}</p>
+      <a class="button" href="{{ url_for('create_listing') }}">Create new listing</a>
+    </div>
+
+    <div class="dashboard-grid">
+      <div>
+        <h3>Your Listings</h3>
+        {% if listings %}
+          <ul class="item-list">
+            {% for listing in listings %}
+
+              <li>
+                <div class="item-row">
+                  <a href="{{ url_for('listing_detail', listing_id=listing.id) }}">{{ listing.title }}</a>
+                  <span>₦{{ '%.2f' | format(listing.price) }}</span>
+                </div>
+                <form class="inline-form" method="POST" action="{{ url_for('delete_listing', listing_id=listing.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button type="submit" class="button button-small button-danger">Delete</button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No listings yet.</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <h3>Your Orders</h3>
+        {% if orders %}
+          <ul class="item-list">
+            {% for order in orders %}
+              <li>
+                <strong>{{ order.listing.title }}</strong>
+                <span>₦{{ '%.2f' | format(order.amount) }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No orders placed yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

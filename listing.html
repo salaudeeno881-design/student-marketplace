@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="listing-detail">
+    {% if listing.image_filename %}
+      <div class="listing-image">
+        <img src="{{ url_for('static', filename='uploads/' + listing.image_filename) }}" alt="{{ listing.title }}" />
+      </div>
+    {% endif %}
+    <p class="tag {{ listing.listing_type }}">{{ 'For sale' if listing.listing_type == 'sell' else 'Wanted' }}</p>
+    <h2>{{ listing.title }}</h2>
+    <p>{{ listing.description }}</p>
+    <p class="price">₦{{ '%.2f' | format(listing.price) }}</p>
+    <p class="meta">Posted by {{ listing.owner.name }} · {{ listing.owner.department }} · Matric {{ listing.owner.matric_number }} · Posted {{ listing.created_at.strftime('%Y-%m-%d') }}</p>
+    <p class="note">Want to meet in person? Use the <a href="{{ url_for('chat') }}">student chat</a> to coordinate a safe meetup or discuss payment details.</p>
+
+    {% if listing.listing_type == 'sell' and current_user.is_authenticated and current_user.id != listing.owner_id %}
+      <form method="POST" action="{{ url_for('checkout', listing_id=listing.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit" class="button-stripe">🔒 Pay with Paystack</button>
+      </form>
+    {% elif listing.listing_type == 'buy' %}
+      <p class="note">This is a buy request. Contact the requester if you can supply the item.</p>
+    {% elif not current_user.is_authenticated %}
+      <p><a href="{{ url_for('login') }}">Sign in</a> to participate.</p>
+    {% elif current_user.id == listing.owner_id %}
+      <p>This is your own listing.</p>
+      <p class="note">If a buyer prefers meeting in person, share this listing in the chat to arrange a safe payment meetup.</p>
+      <form method="POST" action="{{ url_for('delete_listing', listing_id=listing.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="button button-small button-danger">Delete listing</button>
+      </form>
+    {% endif %}
+  </section>
+{% endblock %}

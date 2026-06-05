@@ -1,0 +1,18 @@
+
+--- 2026-06-05T04:16:52.081695 CHECKOUT INIT for listing 1 user 5
+Request headers:
+{"Authorization": "Bearer sk_test_d0165e86b30936872124ebf98458e7e79e1a1fff", "Content-Type": "application/json"}
+Request payload:
+{"email": "satya@student.edu", "amount": 4599, "callback_url": "http://127.0.0.1:5000/success", "metadata": {"listing_id": "1", "buyer_id": "5"}}
+HTTPError code: 403
+Error body:
+error code: 1010
+
+--- 2026-06-05T06:23:08.257592 CHECKOUT INIT for listing 1 user 5
+Request headers:
+{"Authorization": "Bearer sk_test_3bf6cea55d8ca1f041be22606714420af617b220", "Content-Type": "application/json"}
+Request payload:
+{"email": "satya@student.edu", "amount": 4599, "callback_url": "http://127.0.0.1:5000/success", "metadata": {"listing_id": "1", "buyer_id": "5"}}
+HTTPError code: 403
+Error body:
+error code: 1010

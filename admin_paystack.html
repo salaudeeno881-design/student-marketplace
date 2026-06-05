@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="dashboard-panel">
+    <h2>Paystack Configuration (Admin)</h2>
+    <p>This is a non-production debug page. Do not expose in production.</p>
+
+    <div class="card">
+      <p><strong>Paystack Secret Key:</strong> {{ paystack_key_masked or 'Not set' }}</p>
+      <p><strong>Webhook Secret:</strong> {{ webhook_masked or 'Not set' }}</p>
+    </div>
+
+    <div class="card" style="margin-top:1rem;">
+      <h3>Verify a transaction reference</h3>
+      <form method="POST">
+        <label>Reference</label>
+        <input type="text" name="reference" placeholder="Enter transaction reference" />
+        <button type="submit">Verify</button>
+      </form>
+
+      {% if verify_result is not none %}
+        <h4>Result</h4>
+        <pre style="white-space:pre-wrap;">{{ verify_result | tojson(indent=2) }}</pre>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}
